@@ -1,0 +1,45 @@
+name: deploy aws resources
+
+on:
+  push:
+    branches: ['infra']
+
+env:
+  AWS_REGION: ap-northeast-1
+
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: install npm
+        run: 'sudo apt update -y && sudo apt install nodejs npm -y'
+
+      - name: install aws cdk
+        run: 'sudo npm install -g aws-cdk'
+
+      - name: install requirements
+        run: 'pip install -r requirements.txt'
+        working-directory: infra
+
+      - name: cdk diff
+        run: cdk diff
+        working-directory: infra
+
+      - name: cdk synth
+        run: cdk synth
+        working-directory: infra
+
+      - name: cdk deploy
+        run: cdk deploy
+        working-directory: infra
