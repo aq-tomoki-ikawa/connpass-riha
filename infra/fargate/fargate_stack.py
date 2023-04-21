@@ -6,7 +6,7 @@ from aws_cdk import (
     aws_ecs_patterns as ecs_patterns,
 )
 
-class TestStack(Stack):
+class FargateStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -20,6 +20,6 @@ class TestStack(Stack):
             cpu=512,                    # Default is 256
             desired_count=6,            # Default is 1
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                image=ecs.ContainerImage.from_registry("nginx")),
+                image=ecs.ContainerImage.ecs.ContainerImage.from_registry("nginx")),
             memory_limit_mib=2048,      # Default is 512
             public_load_balancer=True)  # Default is True

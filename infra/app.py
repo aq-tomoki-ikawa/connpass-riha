@@ -3,11 +3,11 @@ import os
 
 import aws_cdk as cdk
 
-from test.test_stack import TestStack
+from fargate.fargate_stack import FargateStack
 
 
 app = cdk.App()
-TestStack(app, "TestStack",
+FargateStack(app, "TestStack",
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.
